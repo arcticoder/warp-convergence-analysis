@@ -64,25 +64,46 @@ for t in tests:
         orders[t]["L2"].append(p2)
         orders[t]["Linf"].append(pinf)
 
-# write AsciiMath report
-with open("convergence.am", "w") as f:
-    f.write("=== Convergence Study ===\n\n")
+# write NDJSON report
+import json
+with open("convergence.ndjson", "w") as f:
+    # Write header record
+    header = {
+        "type": "header",
+        "title": "Convergence Study",
+        "date": np.datetime_as_string(np.datetime64('now'), unit='D')
+    }
+    f.write(json.dumps(header) + "\n")
+    
+    # Write results for each test
     for t in tests:
-        f.write(f"== {t} ==\n")
-        f.write("| h       | L_2 error | L_inf error |\n")
-        f.write("|---------|-----------|-------------|\n")
+        # Write test record
+        test_record = {
+            "type": "test",
+            "name": t,
+            "results": []
+        }
+        
+        # Add detailed results for each h
         for h, e2, einf in zip(results[t]["h"], results[t]["L2"], results[t]["Linf"]):
-            f.write(f"| {h:.4f}  | {e2:.2e}   | {einf:.2e}    |\n")
-        f.write("\n")
-        f.write("| Pair           | order_2 | order_inf |\n")
-        f.write("|----------------|---------|-----------|\n")
+            test_record["results"].append({
+                "h": float(h),
+                "L2": float(e2),
+                "Linf": float(einf)
+            })
+        
+        f.write(json.dumps(test_record) + "\n")
+        
+        # Write order records
         for i in range(1, len(hs)):
-            pair = f"{hs[i-1]:.4f}->{hs[i]:.4f}"
-            f.write(
-                f"| {pair} | "
-                f"{orders[t]['L2'][i-1]:.2f}    | "
-                f"{orders[t]['Linf'][i-1]:.2f}      |\n"
-            )
-        f.write("\n")
+            order_record = {
+                "type": "order",
+                "test": t,
+                "h1": float(hs[i-1]),
+                "h2": float(hs[i]),
+                "L2_order": float(orders[t]["L2"][i-1]),
+                "Linf_order": float(orders[t]["Linf"][i-1])
+            }
+            f.write(json.dumps(order_record) + "\n")
 
-print("AsciiMath convergence report written to convergence.am")
+print("NDJSON convergence report written to convergence.ndjson")

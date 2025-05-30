@@ -1,6 +1,6 @@
 # warp-convergence-analysis
 
-Performs a convergence analysis of your warp-solver by using validation results at multiple Δr values, fits observed orders, and emits an **AsciiMath** convergence report.
+Performs a convergence analysis of your warp-solver by using validation results at multiple Δr values, fits observed orders, and emits a **NDJSON** convergence report.
 
 ## Dependencies
 
@@ -29,7 +29,7 @@ warp-convergence-analysis/
 ├── convergence_analysis.py ← this script  
 ├── validation_results.tex ← contains validation results
 ├── solver_update.tex ← contains solver equations
-└── convergence.am ← generated AsciiMath report
+└── convergence.ndjson ← generated NDJSON report
 ```
 
 ## Usage
@@ -43,10 +43,10 @@ warp-convergence-analysis/
 python convergence_analysis.py
 ```
     
-This produces `convergence.am` with AsciiMath-formatted tables.
+This produces `convergence.ndjson` with newline-delimited JSON records.
     
 3. **View the report**  
-   Open `convergence.am` in any AsciiMath-aware renderer (or read as plain text).
+   Parse `convergence.ndjson` with any NDJSON-compatible tool, or process it line by line as JSON objects.
     
 
 ## Customization
