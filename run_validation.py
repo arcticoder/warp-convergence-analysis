@@ -6,6 +6,7 @@ and writes a LaTeX table to validation_results.tex.
 """
 
 import numpy as np
+import argparse
 from solver import integrate_step
 
 # Analytic test profiles
@@ -21,8 +22,15 @@ def norms(numeric, exact):
     return np.linalg.norm(err) / np.sqrt(len(err)), np.max(np.abs(err))
 
 if __name__ == "__main__":
-    # Grid and timestep
-    r_min, r_max, N = 1.0, 10.0, 100
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Run warp solver validation')
+    parser.add_argument('--h', type=float, default=0.1, help='Grid spacing (default: 0.1)')
+    args = parser.parse_args()
+    
+    # Grid and timestep - use h to determine number of points
+    r_min, r_max = 1.0, 10.0
+    h = args.h
+    N = int((r_max - r_min) / h) + 1
     dt = 1e-3
     tol = 1e-6  # adjust as needed
 
@@ -69,10 +77,12 @@ Test           & $L_2$ Error & $L_\infty$ Error & Status \\
 \end{tabular}
 
 \end{document}
-"""
-
-    # Write out
+"""    # Write out
     with open("validation_results.tex", "w") as f:
         f.write(latex)
 
     print("Generated validation_results.tex")
+    
+    # Also output results to stdout for convergence analysis parsing
+    print(f"RESULTS: Minkowski L2={L2_m:.6e} Linf={Linf_m:.6e}")
+    print(f"RESULTS: Schwarzschild L2={L2_s:.6e} Linf={Linf_s:.6e}")
