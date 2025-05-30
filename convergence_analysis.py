@@ -2,9 +2,20 @@
 """
 Convergence analysis for the warp-solver.
 
+This script performs convergence analysis by:
+1. Parsing baseline validation results from validation_results.tex
+2. Generating synthetic error data at multiple grid spacings using theoretical scaling
+3. Computing observed convergence orders between successive grid refinements
+4. Outputting structured convergence data in NDJSON format
+
 Dependencies:
   • validation_results.tex (copied from warp-solver-validation)
+    Contains baseline L₂ and L∞ errors that are scaled to simulate convergence behavior
   • solver_update.tex (copied from warp-solver-equations)
+    Contains solver equation definitions and finite difference stencil information
+
+Output:
+  • convergence.ndjson - Newline-delimited JSON convergence report
 """
 
 import numpy as np
