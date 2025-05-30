@@ -10,7 +10,7 @@ Performs a convergence sweep of your warp-solver by invoking the baseline valida
 ## Inputs
 
 - `run_validation.py`  
-  (from `warp-baseline-validation`)  
+  (from https://github.com/arcticoder/warp-solver-validation)  
 - `generate_solver_equations.py` from https://github.com/arcticoder/warp-solver-equations
 
 ## Repository Structure
