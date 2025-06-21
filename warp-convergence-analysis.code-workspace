@@ -1,8 +1,19 @@
-{
-  "folders": [
+{  "folders": [
     {
       "path": ".",
       "name": "warp-convergence-analysis"
+    },
+    {
+      "path": "../warp-solver-validation",
+      "name": "warp-solver-validation"
+    },
+    {
+      "path": "../warp-solver-equations",
+      "name": "warp-solver-equations"
+    },
+    {
+      "path": "../warp-discretization",
+      "name": "warp-discretization"
     }
   ],
   "extensions": {
